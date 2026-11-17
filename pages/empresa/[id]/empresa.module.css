@@ -1,0 +1,39 @@
+.container {
+    margin-inline: 6.25rem;
+    margin-block: 1.875rem;
+    background-color: var(--bg-destaque);
+    border-radius: var(--radius);
+    padding: 3rem;
+    border: 1px solid var(--roxo);
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.descricaoContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5rem;
+}
+
+.descricao {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    ul {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: .5rem;
+    }
+
+    li {
+        list-style: none;
+    }
+}
+
+.cardContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}

@@ -1,0 +1,19 @@
+.navbar {
+    display: flex;
+    width: 100vw;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--bg-destaque);
+    padding-inline: 6.25rem;
+}
+
+.botoes {
+    display: flex;
+}
+
+@media (max-width: 768px) {
+
+    .navbar {
+        padding-inline: 3.125rem;
+    }
+}

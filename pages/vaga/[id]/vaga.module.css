@@ -1,0 +1,68 @@
+.vagaContainer {
+    margin-inline: 6.25rem;
+    margin-block: 1.875rem;
+    background-color: var(--bg-destaque);
+    border-radius: var(--radius);
+    padding: 3rem;
+    border: 1px solid var(--roxo);
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.vagaHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.vagaBody {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5rem;
+}
+
+.descricao {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    ul {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: .5rem;
+    }
+
+    li {
+        list-style: none;
+    }
+}
+
+.atividadesContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.atividade {
+    padding-inline: 2.5rem;
+    padding-block: 2rem;
+    background-color: var(--roxo-escuro);
+    border-radius: var(--radius);
+    text-align: center;
+}
+
+.vagaFooter {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+}
+
+
+
+@media (max-width: 768px) {
+    .vagaContainer {
+        margin-inline: 3.125rem;
+    }
+}

@@ -1,0 +1,30 @@
+.button {
+    padding-block: 1rem;
+    cursor: pointer;
+    width: fit-content;
+    padding-inline: 2rem;
+    text-align: center;
+    border-radius: var(--radius);
+    background-color: var(--roxo);
+}
+
+.primary {
+    border: 2px solid var(--texto);
+    width: 100%;
+}
+
+.secondary {
+    border: 2px solid var(--roxo-claro);
+}
+
+.link,
+.secondary {
+    background-color: transparent;
+}
+
+.primary:hover,
+.secondary:hover,
+.link:hover {
+    transition: all 0.3s ease-in-out;
+    transform: scale(1.05);
+}

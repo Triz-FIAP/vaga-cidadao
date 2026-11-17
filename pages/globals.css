@@ -1,0 +1,30 @@
+:root {
+  --branco: #E8EFF7;
+  --preto: #3E3E3E;
+  --texto: #E8D5F5;
+  --roxo-escuro: #3B1263;
+  --roxo: #6A0DAD;
+  --bg: #190B2B;
+  --bg-destaque: #270D45;
+  --roxo-claro: #C4A3DC;
+  --radius: 10px
+}
+
+html,
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: var(--font-plus-jakarta-sans), sans-serif;
+  color: var(--texto);
+}
+
+body {
+  background-color: var(--bg);
+}

@@ -1,0 +1,42 @@
+.perfilContainer {
+    margin-inline: 6.25rem;
+    margin-block: 1.875rem;
+    background-color: var(--bg-destaque);
+    border-radius: var(--radius);
+    padding: 3rem;
+    border: 1px solid var(--roxo);
+}
+
+.informacoesContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 1.875rem;
+}
+
+
+.bloco {
+    padding-inline: 2.5rem;
+    padding-block: 5rem;
+    background-color: var(--roxo-escuro);
+    border-radius: var(--radius);
+    text-align: center;
+}
+
+.informacao {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+}
+
+.destaque {
+    font-size: 1.7 rem;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .vagaContainer {
+        margin-inline: 3.125rem;
+    }
+}

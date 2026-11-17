@@ -1,0 +1,38 @@
+.card {
+    background-color: var(--roxo-escuro);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: fit-content;
+}
+
+.titulo {
+    max-width: 100%;
+    white-space: nowrap;
+    /* Impede que o texto quebre para a linha de baixo */
+    overflow: hidden;
+    /* Esconde o texto que ultrapassar a largura */
+    text-overflow: ellipsis;
+    /* Adiciona os "..." no final do corte */
+}
+
+.informacoes {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: .5rem;
+}
+
+.detalhes {
+    display: flex;
+    flex-direction: row;
+    gap: .5rem;
+}
+
+.botoes {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: space-between;
+}
