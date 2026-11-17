@@ -1,5 +1,5 @@
-import { useGetEmpresa } from '@/pages/api/hooks/useGetEmpresa'
-import { CardComponent } from '@/pages/components/Card/CardComponent'
+import { CardComponent } from '@/utilidades/components/Card/CardComponent'
+import { useGetEmpresa } from '@/utilidades/hooks/useGetEmpresa'
 import { CircularProgress } from '@mui/material'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -37,19 +37,21 @@ export default function Empresa() {
                     </div>
                     <div className={style.descricao}>
                         <h3>Vagas disponíveis ({useGetEmpresaRetorno[0].vagas.length})</h3>
-                        {useGetEmpresaRetorno[0].vagas.map((vaga) => (
-                            <CardComponent
-                                key={vaga.id}
-                                id={vaga.id}
-                                cargo={vaga.titulo}
-                                empresa={vaga.empresa.nome}
-                                localizacao={vaga.local}
-                                salvo={vaga.vagaSalva}
-                                modalidade={vaga.modalidade}
-                                experiencia={vaga.experiencia}
-                                salario={vaga.salario}
-                            />
-                        ))}
+                        <div className={style.cardContainer}>
+                            {useGetEmpresaRetorno[0].vagas.map((vaga) => (
+                                <CardComponent
+                                    key={vaga.id}
+                                    id={vaga.id}
+                                    cargo={vaga.titulo}
+                                    empresa={vaga.empresa.nome}
+                                    localizacao={vaga.local}
+                                    salvo={vaga.vagaSalva}
+                                    modalidade={vaga.modalidade}
+                                    experiencia={vaga.experiencia}
+                                    salario={vaga.salario}
+                                />
+                            ))}
+                        </div>
                     </div></>
             )}
 

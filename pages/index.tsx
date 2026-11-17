@@ -1,34 +1,35 @@
+import { useGetTodasVagas } from "@/utilidades/hooks/useGetTodasVagas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { Autocomplete, InputAdornment, TextField } from "@mui/material";
 import Head from "next/head";
-import { useForm } from "react-hook-form";
-import z from "zod";
-import { useGetTodasVagas } from "./api/hooks/useGetTodasVagas";
-import { CardComponent } from "./components/Card/CardComponent";
+import { useEffect } from "react";
+import { Controller, useForm, useWatch } from "react-hook-form";
+import { CardComponent } from "../utilidades/components/Card/CardComponent";
+import { filtroVagaSchema } from "../utilidades/schemas/filtroVagaSchema";
+import { Afirmativas, Cidade, Escala, Escolaridade, Modalidade, Periodo } from "../utilidades/tipos";
 import styles from './Home.module.css';
-
-
-const schema = z.object({
-  titulo: z
-    .string(),
-  escolaridade: z.number().or(z.nan()),
-  afirmativa: z.array(z.number()),
-  periodo: z.array(z.number()),
-  escala: z.array(z.number()),
-  experiencia: z.array(z.number()),
-  cidade: z.array(z.number()),
-  modalidade: z.array(z.number()),
-})
 
 export default function Home() {
   const {
-    register,
-    handleSubmit,
+    control,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(filtroVagaSchema),
+    defaultValues: {
+      titulo: '',
+      afirmativa: [],
+      escala: [],
+      modalidade: [],
+      periodo: [],
+      cidade: [],
+      experiencia: []
+    }
   })
+
+  const filtros = useWatch({
+    control,
+  });
 
   const estilizacaoCamposAutocompleteMultiplo = {
     '& .MuiOutlinedInput-root': {
@@ -54,7 +55,21 @@ export default function Home() {
     },
   }
 
-  const { useGetTodasVagasRetorno } = useGetTodasVagas({})
+  const { useGetTodasVagasRetorno } = useGetTodasVagas({
+    afirmativa: filtros.afirmativa,
+    escala: filtros.escala,
+    modalidade: filtros.modalidade,
+    periodo: filtros.periodo,
+    cidade: filtros.cidade,
+    experiencia: filtros.experiencia,
+    escolaridade: filtros.escolaridade,
+    titulo: filtros.titulo
+  })
+
+  useEffect(() => {
+    console.log(errors)
+    console.log(filtros)
+  }, [errors, filtros]);
 
   return (
     <>
@@ -68,469 +83,526 @@ export default function Home() {
         className={`${styles.page}`}
       >
         <div className={styles.main}>
-          <form className={styles.form} onSubmit={handleSubmit(console.log)}>
-            <TextField
-              {...register("titulo")}
-              className={styles.search}
-              id="outlined-basic"
-              label="Título da vaga"
-              variant="outlined"
-              error={!!errors.titulo}
-              slotProps={{
-                input: {
-                  endAdornment: (
-                    <InputAdornment
-                      position="end"
-                      className={styles.searchIcon}
-                    >
-                      <SearchOutlinedIcon />
-                    </InputAdornment>
-                  ),
-                },
-              }}
-              sx={{
-                '& .MuiOutlinedInput-notchedOutline': {
-                  borderWidth: '2px',
-                  borderColor: 'var(--roxo-claro)',
-                  borderStyle: 'solid',
-                  borderRadius: 'var(--radius)',
-                },
-                '&:hover .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'var(--texto) !important',
-                },
-                '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'var(--roxo-claro)',
-                },
-                '& .MuiInputLabel-root': {
-                  color: 'var(--texto)',
-                  background: 'transparent',
-                  '&.Mui-focused, &.Mui-shrink': {
-                    color: 'var(--texto)',
-                  },
-                },
-                '& .MuiInputBase-input': {
-                  color: 'var(--texto)',
-                },
-                '& .MuiOutlinedInput-root': {
-                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'var(--texto)',
-                  },
-                },
-                '& .MuiInputLabel-root.Mui-focused': {
-                  color: 'var(--texto)',
-                },
-              }}
-            />
-            <Autocomplete
-              {...register("escolaridade")}
-              options={[{ id: 1, label: 'Sim' },
-              { id: 2, label: 'Nao' },
-              { id: 3, label: 'Nao sei' },]}
-              slotProps={{
-                paper: {
-                  sx: {
-                    backgroundColor: 'var(--bg-destaque)',
-                    '& .MuiAutocomplete-option': {
-                      color: 'var(--texto) !important',
-                      '&.Mui-focused': {
-                        color: 'var(--texto) !important',
-                      },
-                      '&.Mui-selected': {
-                        color: 'var(--texto) !important',
-                        '&.Mui-focused': {
-                          color: 'var(--texto) !important',
-                        },
-                      },
-                      '&[aria-selected="true"]': {
-                        color: 'var(--texto) !important',
-                      },
-                    },
-                  },
-                },
-              }}
-              sx={{
-                '& .MuiInputLabel-root': {
-                  color: 'var(--texto)',
-                },
-                '& .MuiInputLabel-root.Mui-focused': {
-                  color: 'var(--texto)',
-                },
-                '& .MuiInputBase-input': {
-                  color: 'var(--texto)',
-                },
-                '& .MuiSvgIcon-root': {
-                  color: 'var(--texto)',
-                },
-                '& .MuiOutlinedInput-root': {
-                  borderRadius: 'var(--radius)',
-                },
-                '& .MuiOutlinedInput-notchedOutline': {
-                  borderRadius: 'var(--radius)',
-                  borderColor: 'var(--roxo-claro)',
-                  borderWidth: '2px',
-                },
-                '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'var(--texto)',
-                  borderWidth: '2px',
-                },
-                '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'var(--texto)',
-                  borderWidth: '2px',
-                },
-              }}
-              renderInput={(params) => <TextField {...params} label="Escolaridade" />}
-            />
-            <Autocomplete
-              {...register('afirmativa')}
-              multiple
-              id="tags-outlined"
-              options={[
-                { id: 1, title: 'Sim' },
-                { id: 2, title: 'Nao' },
-                { id: 3, title: 'Nao sei' },
-              ]}
-              getOptionLabel={(option) => option.title}
-              slotProps={{
-                paper: {
-                  sx: {
-                    backgroundColor: 'var(--bg-destaque)',
-                    '& .MuiAutocomplete-option': {
-                      color: 'var(--texto) !important',
-                      '&.Mui-focused': {
-                        color: 'var(--texto) !important',
-                      },
-                      '&.Mui-selected': {
-                        color: 'var(--texto) !important',
-                        '&.Mui-focused': {
-                          color: 'var(--texto) !important',
-                        },
-                      },
-                      '&[aria-selected="true"]': {
-                        color: 'var(--texto) !important',
-                      },
-                    },
-                  },
-                },
-              }}
-              sx={{
-                '& .MuiChip-root': {
-                  backgroundColor: 'transparent',
-                  border: '1.5px solid var(--roxo-claro)',
-                  borderRadius: 'var(--radius)',
-                  color: 'var(--texto)',
-                },
-                '& .MuiChip-deleteIcon': {
-                  color: 'var(--texto)',
-                },
-                '& .MuiInputBase-input': {
-                  color: 'var(--texto)',
-                },
-                '& .MuiSvgIcon-root:not(.MuiChip-deleteIcon)': {
-                  color: 'var(--texto)',
-                },
-              }}
-              renderInput={(params) => (
+          <form className={styles.form}>
+            <Controller
+              name="titulo"
+              control={control}
+              render={({ field }) => (
                 <TextField
-                  {...params}
+                  className={styles.search}
+                  id="outlined-basic"
+                  label="Título da vaga"
                   variant="outlined"
-                  label="Afirmativas"
-                  placeholder="Afirmativas"
-                  sx={estilizacaoCamposAutocompleteMultiplo}
+                  error={!!errors.titulo}
+                  {...field}
+                  slotProps={{
+                    input: {
+                      endAdornment: (
+                        <InputAdornment
+                          position="end"
+                          className={styles.searchIcon}
+                        >
+                          <SearchOutlinedIcon />
+                        </InputAdornment>
+                      ),
+                    },
+                  }}
+                  sx={{
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderWidth: '2px',
+                      borderColor: 'var(--roxo-claro)',
+                      borderStyle: 'solid',
+                      borderRadius: 'var(--radius)',
+                    },
+                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'var(--texto) !important',
+                    },
+                    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'var(--roxo-claro)',
+                    },
+                    '& .MuiInputLabel-root': {
+                      color: 'var(--texto)',
+                      background: 'transparent',
+                      '&.Mui-focused, &.Mui-shrink': {
+                        color: 'var(--texto)',
+                      },
+                    },
+                    '& .MuiInputBase-input': {
+                      color: 'var(--texto)',
+                    },
+                    '& .MuiOutlinedInput-root': {
+                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'var(--texto)',
+                      },
+                    },
+                    '& .MuiInputLabel-root.Mui-focused': {
+                      color: 'var(--texto)',
+                    },
+                  }}
                 />
               )}
             />
-            <Autocomplete
-              {...register('periodo')}
-              multiple
-              id="tags-outlined"
-              options={[
-                { id: 1, title: 'Sim' },
-                { id: 2, title: 'Nao' },
-                { id: 3, title: 'Nao sei' },
-              ]}
-              getOptionLabel={(option) => option.title}
-              slotProps={{
-                paper: {
-                  sx: {
-                    backgroundColor: 'var(--bg-destaque)',
-                    '& .MuiAutocomplete-option': {
-                      color: 'var(--texto) !important',
-                      '&.Mui-focused': {
-                        color: 'var(--texto) !important',
-                      },
-                      '&.Mui-selected': {
-                        color: 'var(--texto) !important',
-                        '&.Mui-focused': {
+
+            <Controller
+              name="escolaridade"
+              control={control}
+              render={({ field }) => (
+                <Autocomplete
+                  options={[
+                    "Educação Infantil",
+                    "Ensino Fundamental",
+                    "Ensino Médio",
+                    "Superior Completo",
+                    "Superior em andamento",
+                  ] as Escolaridade[]}
+                  value={field.value ?? null}
+                  onChange={(_, value) => field.onChange(value)}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Escolaridade" />
+                  )}
+                  slotProps={{
+                    paper: {
+                      sx: {
+                        backgroundColor: 'var(--bg-destaque)',
+                        '& .MuiAutocomplete-option': {
                           color: 'var(--texto) !important',
+                          '&.Mui-focused': {
+                            color: 'var(--texto) !important',
+                          },
+                          '&.Mui-selected': {
+                            color: 'var(--texto) !important',
+                            '&.Mui-focused': {
+                              color: 'var(--texto) !important',
+                            },
+                          },
+                          '&[aria-selected="true"]': {
+                            color: 'var(--texto) !important',
+                          },
                         },
                       },
-                      '&[aria-selected="true"]': {
-                        color: 'var(--texto) !important',
-                      },
                     },
-                  },
-                },
-              }}
-              sx={{
-                '& .MuiChip-root': {
-                  backgroundColor: 'transparent',
-                  border: '1.5px solid var(--roxo-claro)',
-                  borderRadius: 'var(--radius)',
-                  color: 'var(--texto)',
-                },
-                '& .MuiChip-deleteIcon': {
-                  color: 'var(--texto)',
-                },
-                '& .MuiInputBase-input': {
-                  color: 'var(--texto)',
-                },
-                '& .MuiSvgIcon-root:not(.MuiChip-deleteIcon)': {
-                  color: 'var(--texto)',
-                },
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  variant="outlined"
-                  label="Período"
-                  placeholder="Período"
-                  sx={estilizacaoCamposAutocompleteMultiplo}
+                  }}
+                  sx={{
+                    '& .MuiInputLabel-root': {
+                      color: 'var(--texto)',
+                    },
+                    '& .MuiInputLabel-root.Mui-focused': {
+                      color: 'var(--texto)',
+                    },
+                    '& .MuiInputBase-input': {
+                      color: 'var(--texto)',
+                    },
+                    '& .MuiSvgIcon-root': {
+                      color: 'var(--texto)',
+                    },
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: 'var(--radius)',
+                    },
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderRadius: 'var(--radius)',
+                      borderColor: 'var(--roxo-claro)',
+                      borderWidth: '2px',
+                    },
+                    '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'var(--texto)',
+                      borderWidth: '2px',
+                    },
+                    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'var(--texto)',
+                      borderWidth: '2px',
+                    },
+                  }}
                 />
               )}
             />
-            <Autocomplete
-              {...register('escala')}
-              multiple
-              id="tags-outlined"
-              options={[
-                { id: 1, title: '5x2' },
-                { id: 2, title: '6x1' },
-                { id: 3, title: '4x3' },
-              ]}
-              getOptionLabel={(option) => option.title}
-              slotProps={{
-                paper: {
-                  sx: {
-                    backgroundColor: 'var(--bg-destaque)',
-                    '& .MuiAutocomplete-option': {
-                      color: 'var(--texto) !important',
-                      '&.Mui-focused': {
-                        color: 'var(--texto) !important',
-                      },
-                      '&.Mui-selected': {
-                        color: 'var(--texto) !important',
-                        '&.Mui-focused': {
+
+            <Controller
+              name="afirmativa"
+              control={control}
+              render={({ field }) => (
+                <Autocomplete
+                  multiple
+                  value={field.value ?? null}
+                  onChange={(_, value) => field.onChange(value)}
+                  id="tags-outlined"
+                  options={["LGBTQIAPN+", "Mulher", "PCD", "Pessoa Negra", "Pessoas Trans"] as Afirmativas[]}
+                  getOptionLabel={(option) => option}
+                  slotProps={{
+                    paper: {
+                      sx: {
+                        backgroundColor: 'var(--bg-destaque)',
+                        '& .MuiAutocomplete-option': {
                           color: 'var(--texto) !important',
+                          '&.Mui-focused': {
+                            color: 'var(--texto) !important',
+                          },
+                          '&.Mui-selected': {
+                            color: 'var(--texto) !important',
+                            '&.Mui-focused': {
+                              color: 'var(--texto) !important',
+                            },
+                          },
+                          '&[aria-selected="true"]': {
+                            color: 'var(--texto) !important',
+                          },
                         },
                       },
-                      '&[aria-selected="true"]': {
-                        color: 'var(--texto) !important',
-                      },
                     },
-                  },
-                },
-              }}
-              sx={{
-                '& .MuiChip-root': {
-                  backgroundColor: 'transparent',
-                  border: '1.5px solid var(--roxo-claro)',
-                  borderRadius: 'var(--radius)',
-                  color: 'var(--texto)',
-                },
-                '& .MuiChip-deleteIcon': {
-                  color: 'var(--texto)',
-                },
-                '& .MuiInputBase-input': {
-                  color: 'var(--texto)',
-                },
-                '& .MuiSvgIcon-root:not(.MuiChip-deleteIcon)': {
-                  color: 'var(--texto)',
-                },
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  variant="outlined"
-                  label="Escala"
-                  placeholder="Escala"
-                  sx={estilizacaoCamposAutocompleteMultiplo}
+                  }}
+                  sx={{
+                    '& .MuiChip-root': {
+                      backgroundColor: 'transparent',
+                      border: '1.5px solid var(--roxo-claro)',
+                      borderRadius: 'var(--radius)',
+                      color: 'var(--texto)',
+                    },
+                    '& .MuiChip-deleteIcon': {
+                      color: 'var(--texto)',
+                    },
+                    '& .MuiInputBase-input': {
+                      color: 'var(--texto)',
+                    },
+                    '& .MuiSvgIcon-root:not(.MuiChip-deleteIcon)': {
+                      color: 'var(--texto)',
+                    },
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="outlined"
+                      label="Afirmativas"
+                      placeholder="Afirmativas"
+                      sx={estilizacaoCamposAutocompleteMultiplo}
+                    />
+                  )}
                 />
               )}
             />
-            <Autocomplete
-              {...register('experiencia')}
-              multiple
-              id="tags-outlined"
-              options={[
-                { id: 1, title: 'Sim' },
-                { id: 2, title: 'Nao' },
-              ]}
-              getOptionLabel={(option) => option.title}
-              slotProps={{
-                paper: {
-                  sx: {
-                    backgroundColor: 'var(--bg-destaque)',
-                    '& .MuiAutocomplete-option': {
-                      color: 'var(--texto) !important',
-                      '&.Mui-focused': {
-                        color: 'var(--texto) !important',
-                      },
-                      '&.Mui-selected': {
-                        color: 'var(--texto) !important',
-                        '&.Mui-focused': {
+
+
+            <Controller
+              name="periodo"
+              control={control}
+              render={({ field }) => (
+                <Autocomplete
+                  value={field.value ?? null}
+                  onChange={(_, value) => field.onChange(value)}
+                  multiple
+                  id="tags-outlined"
+                  options={[
+                    "Integral", "Parcial Manhã", "Parcial Tarde", "Parcial Noite",
+                  ] as Periodo[]}
+                  getOptionLabel={(option) => option}
+                  slotProps={{
+                    paper: {
+                      sx: {
+                        backgroundColor: 'var(--bg-destaque)',
+                        '& .MuiAutocomplete-option': {
                           color: 'var(--texto) !important',
+                          '&.Mui-focused': {
+                            color: 'var(--texto) !important',
+                          },
+                          '&.Mui-selected': {
+                            color: 'var(--texto) !important',
+                            '&.Mui-focused': {
+                              color: 'var(--texto) !important',
+                            },
+                          },
+                          '&[aria-selected="true"]': {
+                            color: 'var(--texto) !important',
+                          },
                         },
                       },
-                      '&[aria-selected="true"]': {
-                        color: 'var(--texto) !important',
+                    },
+                  }}
+                  sx={{
+                    '& .MuiChip-root': {
+                      backgroundColor: 'transparent',
+                      border: '1.5px solid var(--roxo-claro)',
+                      borderRadius: 'var(--radius)',
+                      color: 'var(--texto)',
+                    },
+                    '& .MuiChip-deleteIcon': {
+                      color: 'var(--texto)',
+                    },
+                    '& .MuiInputBase-input': {
+                      color: 'var(--texto)',
+                    },
+                    '& .MuiSvgIcon-root:not(.MuiChip-deleteIcon)': {
+                      color: 'var(--texto)',
+                    },
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="outlined"
+                      label="Período"
+                      placeholder="Período"
+                      sx={estilizacaoCamposAutocompleteMultiplo}
+                    />
+                  )}
+                />
+              )} />
+
+            <Controller
+              name="escala"
+              control={control}
+              render={({ field }) => (
+                <Autocomplete
+                  value={field.value ?? null}
+                  onChange={(_, value) => field.onChange(value)}
+                  multiple
+                  id="tags-outlined"
+                  options={[
+                    "2x6", "3x4", "4x3", "5x2", "6x1"
+                  ] as Escala[]}
+                  getOptionLabel={(option) => option}
+                  slotProps={{
+                    paper: {
+                      sx: {
+                        backgroundColor: 'var(--bg-destaque)',
+                        '& .MuiAutocomplete-option': {
+                          color: 'var(--texto) !important',
+                          '&.Mui-focused': {
+                            color: 'var(--texto) !important',
+                          },
+                          '&.Mui-selected': {
+                            color: 'var(--texto) !important',
+                            '&.Mui-focused': {
+                              color: 'var(--texto) !important',
+                            },
+                          },
+                          '&[aria-selected="true"]': {
+                            color: 'var(--texto) !important',
+                          },
+                        },
                       },
                     },
-                  },
-                },
-              }}
-              sx={{
-                '& .MuiChip-root': {
-                  backgroundColor: 'transparent',
-                  border: '1.5px solid var(--roxo-claro)',
-                  borderRadius: 'var(--radius)',
-                  color: 'var(--texto)',
-                },
-                '& .MuiChip-deleteIcon': {
-                  color: 'var(--texto)',
-                },
-                '& .MuiInputBase-input': {
-                  color: 'var(--texto)',
-                },
-                '& .MuiSvgIcon-root:not(.MuiChip-deleteIcon)': {
-                  color: 'var(--texto)',
-                },
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  variant="outlined"
-                  label="Experiência"
-                  placeholder="Experiência"
-                  sx={estilizacaoCamposAutocompleteMultiplo}
+                  }}
+                  sx={{
+                    '& .MuiChip-root': {
+                      backgroundColor: 'transparent',
+                      border: '1.5px solid var(--roxo-claro)',
+                      borderRadius: 'var(--radius)',
+                      color: 'var(--texto)',
+                    },
+                    '& .MuiChip-deleteIcon': {
+                      color: 'var(--texto)',
+                    },
+                    '& .MuiInputBase-input': {
+                      color: 'var(--texto)',
+                    },
+                    '& .MuiSvgIcon-root:not(.MuiChip-deleteIcon)': {
+                      color: 'var(--texto)',
+                    },
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="outlined"
+                      label="Escala"
+                      placeholder="Escala"
+                      sx={estilizacaoCamposAutocompleteMultiplo}
+                    />
+                  )}
+                />
+
+              )} />
+
+
+            <Controller
+              name="experiencia"
+              control={control}
+              render={({ field }) => (
+                <Autocomplete
+                  multiple
+                  options={[
+                    { id: true, title: "Com experiência" },
+                    { id: false, title: "Sem experiência" },
+                  ]}
+                  getOptionValue={(option) => option.id}
+                  getOptionLabel={(option) => option.title}
+                  value={Array.isArray(field.value) ? field.value : []}
+                  onChange={(_, value) => field.onChange(value)}
+                  slotProps={{
+                    paper: {
+                      sx: {
+                        backgroundColor: 'var(--bg-destaque)',
+                        '& .MuiAutocomplete-option': {
+                          color: 'var(--texto) !important',
+                          '&.Mui-focused': {
+                            color: 'var(--texto) !important',
+                          },
+                          '&.Mui-selected': {
+                            color: 'var(--texto) !important',
+                            '&.Mui-focused': {
+                              color: 'var(--texto) !important',
+                            },
+                          },
+                          '&[aria-selected="true"]': {
+                            color: 'var(--texto) !important',
+                          },
+                        },
+                      },
+                    },
+                  }}
+                  sx={{
+                    '& .MuiChip-root': {
+                      backgroundColor: 'transparent',
+                      border: '1.5px solid var(--roxo-claro)',
+                      borderRadius: 'var(--radius)',
+                      color: 'var(--texto)',
+                    },
+                    '& .MuiChip-deleteIcon': {
+                      color: 'var(--texto)',
+                    },
+                    '& .MuiInputBase-input': {
+                      color: 'var(--texto)',
+                    },
+                    '& .MuiSvgIcon-root:not(.MuiChip-deleteIcon)': {
+                      color: 'var(--texto)',
+                    },
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Experiência"
+                      placeholder="Experiência"
+                      sx={estilizacaoCamposAutocompleteMultiplo}
+                    />
+                  )}
                 />
               )}
             />
-            <Autocomplete
-              {...register('experiencia')}
-              multiple
-              id="tags-outlined"
-              options={[
-                { id: 1, title: 'São Paulo' },
-                { id: 2, title: 'Rio de Janeiro' },
-              ]}
-              getOptionLabel={(option) => option.title}
-              slotProps={{
-                paper: {
-                  sx: {
-                    backgroundColor: 'var(--bg-destaque)',
-                    '& .MuiAutocomplete-option': {
-                      color: 'var(--texto) !important',
-                      '&.Mui-focused': {
-                        color: 'var(--texto) !important',
-                      },
-                      '&.Mui-selected': {
-                        color: 'var(--texto) !important',
-                        '&.Mui-focused': {
+
+
+            <Controller
+              name="cidade"
+              control={control}
+              render={({ field }) => (
+                <Autocomplete
+                  value={field.value ?? null}
+                  onChange={(_, value) => field.onChange(value)}
+                  multiple
+                  id="tags-outlined"
+                  options={["Rio de Janeiro", "São Paulo"] as Cidade[]}
+                  getOptionLabel={(option) => option}
+                  slotProps={{
+                    paper: {
+                      sx: {
+                        backgroundColor: 'var(--bg-destaque)',
+                        '& .MuiAutocomplete-option': {
                           color: 'var(--texto) !important',
+                          '&.Mui-focused': {
+                            color: 'var(--texto) !important',
+                          },
+                          '&.Mui-selected': {
+                            color: 'var(--texto) !important',
+                            '&.Mui-focused': {
+                              color: 'var(--texto) !important',
+                            },
+                          },
+                          '&[aria-selected="true"]': {
+                            color: 'var(--texto) !important',
+                          },
                         },
                       },
-                      '&[aria-selected="true"]': {
-                        color: 'var(--texto) !important',
-                      },
                     },
-                  },
-                },
-              }}
-              sx={{
-                '& .MuiChip-root': {
-                  backgroundColor: 'transparent',
-                  border: '1.5px solid var(--roxo-claro)',
-                  borderRadius: 'var(--radius)',
-                  color: 'var(--texto)',
-                },
-                '& .MuiChip-deleteIcon': {
-                  color: 'var(--texto)',
-                },
-                '& .MuiInputBase-input': {
-                  color: 'var(--texto)',
-                },
-                '& .MuiSvgIcon-root:not(.MuiChip-deleteIcon)': {
-                  color: 'var(--texto)',
-                },
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  variant="outlined"
-                  label="Cidade"
-                  placeholder="Cidade"
-                  sx={estilizacaoCamposAutocompleteMultiplo}
+                  }}
+                  sx={{
+                    '& .MuiChip-root': {
+                      backgroundColor: 'transparent',
+                      border: '1.5px solid var(--roxo-claro)',
+                      borderRadius: 'var(--radius)',
+                      color: 'var(--texto)',
+                    },
+                    '& .MuiChip-deleteIcon': {
+                      color: 'var(--texto)',
+                    },
+                    '& .MuiInputBase-input': {
+                      color: 'var(--texto)',
+                    },
+                    '& .MuiSvgIcon-root:not(.MuiChip-deleteIcon)': {
+                      color: 'var(--texto)',
+                    },
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="outlined"
+                      label="Cidade"
+                      placeholder="Cidade"
+                      sx={estilizacaoCamposAutocompleteMultiplo}
+                    />
+                  )}
                 />
-              )}
-            />
-            <Autocomplete
-              {...register('experiencia')}
-              multiple
-              id="tags-outlined"
-              options={[
-                { id: 1, title: 'Home Office' },
-                { id: 2, title: 'Presencial' },
-              ]}
-              getOptionLabel={(option) => option.title}
-              slotProps={{
-                paper: {
-                  sx: {
-                    backgroundColor: 'var(--bg-destaque)',
-                    '& .MuiAutocomplete-option': {
-                      color: 'var(--texto) !important',
-                      '&.Mui-focused': {
-                        color: 'var(--texto) !important',
-                      },
-                      '&.Mui-selected': {
-                        color: 'var(--texto) !important',
-                        '&.Mui-focused': {
+
+              )} />
+
+            <Controller
+              name="modalidade"
+              control={control}
+              render={({ field }) => (
+                <Autocomplete
+                  value={field.value ?? null}
+                  onChange={(_, value) => field.onChange(value)}
+                  multiple
+                  id="tags-outlined"
+                  options={[
+                    "Híbrido", "Remoto", "Presencial"
+                  ] as Modalidade[]}
+                  getOptionLabel={(option) => option}
+                  slotProps={{
+                    paper: {
+                      sx: {
+                        backgroundColor: 'var(--bg-destaque)',
+                        '& .MuiAutocomplete-option': {
                           color: 'var(--texto) !important',
+                          '&.Mui-focused': {
+                            color: 'var(--texto) !important',
+                          },
+                          '&.Mui-selected': {
+                            color: 'var(--texto) !important',
+                            '&.Mui-focused': {
+                              color: 'var(--texto) !important',
+                            },
+                          },
+                          '&[aria-selected="true"]': {
+                            color: 'var(--texto) !important',
+                          },
                         },
                       },
-                      '&[aria-selected="true"]': {
-                        color: 'var(--texto) !important',
-                      },
                     },
-                  },
-                },
-              }}
-              sx={{
-                '& .MuiChip-root': {
-                  backgroundColor: 'transparent',
-                  border: '1.5px solid var(--roxo-claro)',
-                  borderRadius: 'var(--radius)',
-                  color: 'var(--texto)',
-                },
-                '& .MuiChip-deleteIcon': {
-                  color: 'var(--texto)',
-                },
-                '& .MuiInputBase-input': {
-                  color: 'var(--texto)',
-                },
-                '& .MuiSvgIcon-root:not(.MuiChip-deleteIcon)': {
-                  color: 'var(--texto)',
-                },
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  variant="outlined"
-                  label="Modalidade"
-                  placeholder="Modalidade"
-                  sx={estilizacaoCamposAutocompleteMultiplo}
+                  }}
+                  sx={{
+                    '& .MuiChip-root': {
+                      backgroundColor: 'transparent',
+                      border: '1.5px solid var(--roxo-claro)',
+                      borderRadius: 'var(--radius)',
+                      color: 'var(--texto)',
+                    },
+                    '& .MuiChip-deleteIcon': {
+                      color: 'var(--texto)',
+                    },
+                    '& .MuiInputBase-input': {
+                      color: 'var(--texto)',
+                    },
+                    '& .MuiSvgIcon-root:not(.MuiChip-deleteIcon)': {
+                      color: 'var(--texto)',
+                    },
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="outlined"
+                      label="Modalidade"
+                      placeholder="Modalidade"
+                      sx={estilizacaoCamposAutocompleteMultiplo}
+                    />
+                  )}
                 />
-              )}
-            />
+
+              )} />
           </form>
           <div className={styles.cardContainer}>
             {useGetTodasVagasRetorno?.map((vaga) => (
@@ -541,7 +613,7 @@ export default function Home() {
                 empresa={vaga.empresa.nome}
                 localizacao={vaga.local}
                 salvo={vaga.vagaSalva}
-                modalidade={vaga.modalidade}
+                modalidade={`${vaga.modalidade} - ${vaga.escala}`}
                 experiencia={vaga.experiencia}
                 salario={vaga.salario}
               />

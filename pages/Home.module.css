@@ -18,8 +18,17 @@
 
 .cardContainer {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1rem;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+}
+
+@media (max-width: 1024px) {
+    .cardContainer {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
 @media (max-width: 992px) {
@@ -41,12 +50,16 @@
         grid-template-columns: repeat(2, 1fr);
     }
 
+    .cardContainer {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .search {
         grid-column: 1 / 2;
     }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 640px) {
 
     .main {
         margin-inline: 3.125rem;
@@ -54,6 +67,10 @@
 
     .form {
         grid-template-columns: repeat(1, 1fr);
+    }
+
+    .cardContainer {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
     }
 
     .search {

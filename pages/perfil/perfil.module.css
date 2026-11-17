@@ -7,36 +7,27 @@
     border: 1px solid var(--roxo);
 }
 
-.informacoesContainer {
+.cardContainer {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1rem;
-    margin-top: 1.875rem;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
 }
 
+@media (max-width: 992px) {
+    .cardContainer {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
 
-.bloco {
-    padding-inline: 2.5rem;
-    padding-block: 5rem;
-    background-color: var(--roxo-escuro);
-    border-radius: var(--radius);
-    text-align: center;
-}
-
-.informacao {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: .5rem;
-}
-
-.destaque {
-    font-size: 1.7 rem;
-    font-weight: bold;
+    .css-hzcega-MuiTabs-list {
+        overflow: scroll !important;
+    }
 }
 
 @media (max-width: 768px) {
-    .vagaContainer {
+    .perfilContainer {
         margin-inline: 3.125rem;
     }
 }

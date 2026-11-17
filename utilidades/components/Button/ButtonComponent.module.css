@@ -6,11 +6,11 @@
     text-align: center;
     border-radius: var(--radius);
     background-color: var(--roxo);
+    width: 100%;
 }
 
 .primary {
     border: 2px solid var(--texto);
-    width: 100%;
 }
 
 .secondary {
@@ -27,4 +27,9 @@
 .link:hover {
     transition: all 0.3s ease-in-out;
     transform: scale(1.05);
+}
+
+.inativo {
+    background-color: var(--roxo-escuro) !important;
+    cursor: not-allowed !important;
 }

@@ -33,3 +33,10 @@
     gap: 1rem;
     justify-content: space-between;
 }
+
+@media (max-width: 992px) {
+    .botoes {
+        flex-direction: column;
+        width: 100%;
+    }
+}

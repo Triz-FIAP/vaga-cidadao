@@ -1,10 +1,11 @@
-import { ButtonComponent } from '@/pages/components/Button/ButtonComponent';
-import Link from 'next/link';
-import style from './vaga.module.css';
-import { useParams } from 'next/navigation';
-import { useGetTodasVagas } from '@/pages/api/hooks/useGetTodasVagas';
+import { ButtonComponent } from '@/utilidades/components/Button/ButtonComponent';
+import { useGetTodasVagas } from '@/utilidades/hooks/useGetTodasVagas';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { CircularProgress } from '@mui/material';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import style from './vaga.module.css';
 
 export default function Vaga() {
     const params = useParams()
@@ -16,7 +17,7 @@ export default function Vaga() {
     }, [params]);
 
     return (
-        <div className={style.vagaContainer}>
+        <main className={style.vagaContainer}>
             {useGetTodasVagasPeding ? <CircularProgress aria-label="Loading…" /> : useGetTodasVagasRetorno && (
                 <>
                     <div className={style.vagaHeader}>
@@ -25,6 +26,37 @@ export default function Vaga() {
                             <p>{useGetTodasVagasRetorno[0].empresa.nome}</p>
                         </Link>
                     </div>
+                    {
+                        useGetTodasVagasRetorno[0].curriculoEnviado && <div className={style.curriculo}>
+                            <div className={`${style.blocoCurriculo}`}>
+                                <h4 className={style.tituloCurriculo}>Currículo enviado</h4>
+                                <p className={style.data}>{useGetTodasVagasRetorno[0].curriculoEnviado.toString().split('T')[0]}</p>
+                            </div>
+                            <ArrowForwardIcon sx={{ opacity: ".5", fontSize: "2rem" }} />
+                            <div className={`${style.blocoCurriculo}`}>
+                                <h4 className={useGetTodasVagasRetorno[0].curriculoVisto ? style.tituloCurriculo : style.blocoCurriculoDefault}>Currículo Visto</h4>
+                                {useGetTodasVagasRetorno[0].curriculoVisto && <p className={style.data}>{useGetTodasVagasRetorno[0].curriculoVisto.toString().split('T')[0]}</p>}
+                            </div>
+                            <ArrowForwardIcon sx={{ opacity: ".5", fontSize: "2rem" }} />
+                            <div className={`${style.blocoCurriculo}`}>
+                                {
+                                    useGetTodasVagasRetorno[0].curriculoAprovado ?
+                                        <>
+                                            <h4 className={useGetTodasVagasRetorno[0].curriculoVisto ? style.tituloCurriculo : style.blocoCurriculoDefault}>Currículo Aprovado</h4>
+                                            <p className={style.data}>{useGetTodasVagasRetorno[0].curriculoAprovado.toString().split('T')[0]}</p>
+                                        </>
+                                        : useGetTodasVagasRetorno[0].curriculoRejeitado ?
+                                            <>
+                                                <h4 className={useGetTodasVagasRetorno[0].curriculoVisto ? style.tituloCurriculo : style.blocoCurriculoDefault}>Currículo Rejeitado</h4>
+                                                <p className={style.data}>{useGetTodasVagasRetorno[0].curriculoRejeitado.toString().split('T')[0]}</p>
+                                            </>
+                                            : <h4 className={style.blocoCurriculoDefault}>Resposta Pendente</h4>
+
+                                }
+                            </div>
+
+                        </div>
+                    }
                     <div className={style.vagaBody}>
                         <div className={style.descricao}>
                             <h3>Descrição da vaga</h3>
@@ -83,10 +115,10 @@ export default function Vaga() {
                         </div>
                     </div>
                     <div className={style.vagaFooter}>
-                        <ButtonComponent text="Candidatar-se" action={() => { }} type='primary' />
-                        <ButtonComponent text="Salvar" action={() => { }} type='secondary' />
+                        <ButtonComponent text={useGetTodasVagasRetorno[0].curriculoEnviado ? 'Candidatou-se' : 'Canditatar-se'} action={() => { }} type={useGetTodasVagasRetorno[0].curriculoEnviado ? 'inativo' : 'primary'} />
+                        <ButtonComponent text={useGetTodasVagasRetorno[0].vagaSalva ? 'Salvo' : 'Salvar'} action={() => { }} type='secondary' />
                     </div></>
             )}
-        </div>
+        </main>
     );
 }

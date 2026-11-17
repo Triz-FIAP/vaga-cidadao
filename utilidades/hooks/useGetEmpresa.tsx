@@ -1,7 +1,7 @@
 
-import { Empresa } from "@/pages/tipagens/tipos";
+import { api, QUERY_KEYS } from "@/utilidades/api";
+import { Empresa } from "@/utilidades/tipos";
 import { useQuery } from "@tanstack/react-query";
-import { api, QUERY_KEYS } from "../api";
 
 export function useGetEmpresa({ id }: { id?: number }) {
     const { data, isPending, isError, error } = useQuery<Empresa[]>({

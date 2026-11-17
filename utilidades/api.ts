@@ -6,6 +6,6 @@ export const api = axios.create({
 });
 
 export const QUERY_KEYS = {
-    vagas: ['/api/rotas/vagas'] as const,
-    empresa: ['/api/rotas/empresas'] as const,
+    vagas: ['/api/vagas'] as const,
+    empresa: ['/api/empresas'] as const,
 };
