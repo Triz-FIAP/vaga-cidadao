@@ -1,10 +1,11 @@
 import axios from 'axios';
 
 export const api = axios.create({
-    baseURL: 'https://pdv.empregare.com',
+    baseURL: 'http://localhost:3000',
     timeout: 10000,
 });
 
 export const QUERY_KEYS = {
-    vagas: ['/api/{culture}/vagas/buscar-novo'] as const,
+    vagas: ['/api/rotas/vagas'] as const,
+    empresa: ['/api/rotas/empresas'] as const,
 };

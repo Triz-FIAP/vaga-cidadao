@@ -1,13 +1,12 @@
-import styles from './Home.module.css'
 import { zodResolver } from "@hookform/resolvers/zod";
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { Autocomplete, InputAdornment, TextField } from "@mui/material";
 import Head from "next/head";
 import { useForm } from "react-hook-form";
 import z from "zod";
-import { CardComponent } from "./components/Card/CardComponent";
 import { useGetTodasVagas } from "./api/hooks/useGetTodasVagas";
-import { useEffect, useState } from "react";
+import { CardComponent } from "./components/Card/CardComponent";
+import styles from './Home.module.css';
 
 
 const schema = z.object({
@@ -23,7 +22,6 @@ const schema = z.object({
 })
 
 export default function Home() {
-  const [vagasFiltradas, setVagasFiltradas] = useState<camposVaga[]>([])
   const {
     register,
     handleSubmit,
@@ -56,19 +54,7 @@ export default function Home() {
     },
   }
 
-  const { vagas } = useGetTodasVagas()
-
-  useEffect(() => {
-    vagas?.model.dados?.forEach((vaga) => {
-      if (
-        vaga.titulo &&
-        vaga.empresa &&
-        vaga.status === "Aberta"
-      ) {
-        setVagasFiltradas((vagasFiltradas) => [...vagasFiltradas, vaga])
-      }
-    })
-  }, [vagas]);
+  const { useGetTodasVagasRetorno } = useGetTodasVagas({})
 
   return (
     <>
@@ -547,17 +533,17 @@ export default function Home() {
             />
           </form>
           <div className={styles.cardContainer}>
-            {vagasFiltradas.map((vaga) => (
+            {useGetTodasVagasRetorno?.map((vaga) => (
               <CardComponent
                 key={vaga.id}
                 id={vaga.id}
-                cargo={vaga.titulo!}
-                empresa={vaga.empresa!}
-                localizacao={vaga.cidades?.map((cidade) => cidade).join(', ') || ''}
-                salvo={false}
-                modalidade={vaga.trabalhoRemoto || vaga.trabalhoRemotoTexto || ''}
-                experiencia={false}
-                salario={vaga.salario || ''}
+                cargo={vaga.titulo}
+                empresa={vaga.empresa.nome}
+                localizacao={vaga.local}
+                salvo={vaga.vagaSalva}
+                modalidade={vaga.modalidade}
+                experiencia={vaga.experiencia}
+                salario={vaga.salario}
               />
             ))}
           </div>
