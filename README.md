@@ -1,40 +1,91 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Vaga Cidadão
 
-## Getting Started
+**Uma plataforma digital para facilitar o acesso a oportunidades de emprego.**
 
-First, run the development server:
+## Sobre o projeto
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+O Vaga Cidadão é um protótipo de plataforma web desenvolvido no contexto da Global Solution, com foco em CitizenTech.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+O projeto tem como proposta facilitar a busca por oportunidades profissionais, reunindo informações sobre vagas em um único ambiente digital. A plataforma busca tornar a experiência de procura por emprego mais organizada, acessível e intuitiva, considerando dificuldades como a dispersão de anúncios, a falta de clareza nas informações e o acompanhamento de processos seletivos.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Objetivo
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+Oferecer uma ferramenta de consulta de oportunidades profissionais que permita ao cidadão pesquisar vagas, utilizar filtros para refinar os resultados e visualizar informações detalhadas sobre cada oportunidade.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+O protótipo também apresenta uma demonstração de acompanhamento das etapas de candidatura, permitindo visualizar o andamento de um processo seletivo.
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Funcionalidades
 
-## Learn More
+- Pesquisa dinâmica de oportunidades profissionais.
+- Filtros por título da vaga, escolaridade, vagas afirmativas, período, escala, experiência, cidade e modalidade.
+- Visualização dos resultados de pesquisa em cartões de oportunidades.
+- Páginas individuais com informações e requisitos das vagas.
+- Demonstração visual das etapas de acompanhamento de candidaturas.
+- Navegação entre as diferentes telas da plataforma.
 
-To learn more about Next.js, take a look at the following resources:
+**Observação:** o acompanhamento de candidaturas é apresentado como uma demonstração estática, não possuindo integração com sistemas reais de recrutamento.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+## Tecnologias utilizadas
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Next.js:** estrutura e organização da aplicação web.
+- **React:** construção dos componentes e interfaces.
+- **TypeScript:** tipagem e organização do código.
+- **Material UI:** componentes visuais da interface.
+- **React Hook Form:** gerenciamento dos formulários.
+- **Zod:** validação de dados.
 
-## Deploy on Vercel
+## Identidade visual
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+A identidade visual do Vaga Cidadão foi desenvolvida para transmitir clareza, acessibilidade e consistência. A interface utiliza uma paleta predominantemente roxa e violeta, acompanhada de elementos gráficos e componentes padronizados para facilitar a identificação das informações e a navegação.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+## Objetivos de Desenvolvimento Sustentável (ODS)
+
+O projeto se relaciona principalmente com:
+
+- **ODS 8 – Trabalho Decente e Crescimento Econômico:** por contribuir com a facilitação do acesso à informação sobre oportunidades profissionais.
+- **ODS 10 – Redução das Desigualdades:** por propor uma ferramenta de consulta de vagas voltada à população em busca de emprego, incluindo oportunidades afirmativas.
+
+## Acesso ao projeto
+
+- **Repositório GitHub:** https://github.com/Triz-FIAP/vaga-cidadao
+- **Protótipo publicado:** https://vaga-cidadao-five.vercel.app
+
+## Como executar localmente
+
+É necessário possuir Node.js e npm instalados.
+
+1. Clone o repositório:
+
+   ```bash
+   git clone https://github.com/Triz-FIAP/vaga-cidadao.git
+   ```
+
+2. Acesse a pasta do projeto:
+
+   ```bash
+   cd vaga-cidadao
+   ```
+
+3. Instale as dependências:
+
+   ```bash
+   npm install
+   ```
+
+4. Inicie o servidor de desenvolvimento:
+
+   ```bash
+   npm run dev
+   ```
+
+5. Acesse http://localhost:3000 no navegador.
+
+## Integrantes
+
+- Beatriz Belaparte Favero – RM568666
+- Eduardo dos Santos – RM573893
+- Gloria Maria Lana de Mello – RM571281
+
+---
+
+**Projeto acadêmico desenvolvido para a Global Solution – FIAP.**
